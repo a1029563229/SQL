@@ -93,3 +93,53 @@ SQL 语言包含的部分：
   - primary key (Ai ... Aj) 表明了属性 Ai - Aj 构成关系的主码；主码属性必须非空且唯一；
   - foreign key (Ai ... Aj) references [s]：表明关系中任意元组在属性 Ai - Aj 上的取值必须对应关系 s 中某元组在主码属性上的取值。
   - not null：一个属性上的 not null 约束表明在该属性上不允许空值。
+
+## SQL 查询的基本结构
+
+### 单关系查询
+```sql
+-- 找出所有教师的名字
+select name
+from instructor;
+
+-- 找出所有教师所在的系名
+select dept_name
+from instructor;
+
+-- 显式去除重复
+select distinct dept_name
+from instructor;
+
+-- 显式不去除重复
+select all dept_name
+from instructor;
+
+-- 带运算的查询（并不影响数据库内的实际数据）
+select ID, name, dept_name, salary * 1.1
+from instructor;
+
+-- 找出所有在 Computer Science 系并且工资超过 70000 美元的教师的名字
+select name
+from instructor
+where dept_name = 'Computer Science' and salary > 70000;
+```
+
+### 多关系查询
+
+```sql
+-- 找出所有教师的名字，以及他们所在系的名称和系所在建筑的名称
+select name, instructor.dept_name, building
+from instructor, department
+where instructor.dept_name = department.dept_name;
+```
+
+SQL 查询的子句：
+  - select：用于列出查询结果中所需要的属性；
+  - from：一个查询求值中需要访问的关系列表；
+  - where：一个作用在 from子句中关系的属性上的谓词；
+
+- 对于相同的属性名，我们在属性名前加上关系名作为前缀，表示该属性来自于哪个关系；
+- 对于那些只出现在单个模式中的属性，我们通常去掉关系名前缀。
+```sql
+
+```
