@@ -1,11 +1,5 @@
 SELECT cust_name, cust_contact
-FROM customers
-WHERE cust_id IN (
-  SELECT cust_id
-  FROM orders
-  WHERE order_num IN (
-    SELECT order_num
-    FROM order_items
-    WHERE prod_id = 'TNT2'
-  )
-);
+FROM customers AS c, orders AS o, orderitems AS oi
+WHERE c.cust_id = o.cust_id
+  AND oi.order_num = o.order_num
+  AND prod_id = 'TNT2';

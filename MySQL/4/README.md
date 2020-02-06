@@ -391,3 +391,87 @@ SELECT cust_name,
 FROM customers
 ORDER BY cust_name;
 ```
+
+## 联结表
+
+```sql
+-- 跨表查询
+SELECT vend_name, prod_name, prod_price
+FROM vendors, products
+WHERE vendors.vend_id = products.vend_id
+ORDER BY vend_name, prod_name;
+
+-- 等值联结
+SELECT vend_name, prod_name, prod_price
+FROM vendors INNER JOIN products
+ON vendors.vend_id = products.vend_id;
+
+-- 联结多个表
+SELECT prod_name, vend_name, prod_price, quantity
+FROM orderitems, products, vendors
+WHERE products.vend_id = vendors.vend_id
+  AND orderitems.prod_id = products.prod_id
+  AND order_num = 20005;
+
+-- 联结多个表
+SELECT cust_name, cust_contact
+FROM customers, orders, orderitems
+WHERE customers.cust_id = orders.cust_id
+  AND orderitems.order_num = orders.order_num
+  AND prod_id = 'TNT2';
+
+-- 创建表别名
+SELECT cust_name, cust_contact
+FROM customers AS c, orders AS o, orderitems AS oi
+WHERE c.cust_id = o.cust_id
+  AND oi.order_num = o.order_num
+  AND prod_id = 'TNT2';
+
+-- 联结查询
+SELECT p1.prod_id, p1.prod_name
+FROM products AS p1, products AS p2
+WHERE p1.vend_id = p2.vend_id
+  AND p2.prod_id = 'DTNTR';
+
+-- 带聚集函数的联结
+SELECT customers.cust_name,
+       customers.cust_id,
+       COUNT(orders.order_num) AS num_ord
+FROM customers INNER JOIN orders
+  ON customers.cust_id = orders.cust_id
+GROUP BY customers.cust_id;
+```
+
+应该保证所有联结都有 WHERE 子句。
+
+## 组合查询
+
+```sql
+-- 组合查询
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE prod_price <= 5
+UNION
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE vend_id IN(1001,1002);
+
+-- 组合查询排序
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE prod_price <= 5
+UNION
+SELECT vend_id, prod_id, prod_price
+FROM products
+WHERE vend_id IN(1001,1002)
+ORDER BY vend_id, prod_price;
+```
+
+## 全文本搜索
+
+```sql
+-- 全文本搜索
+SELECT note_text
+FROM productnotes
+WHERE Match(note_text) Against('rabbit');
+```
