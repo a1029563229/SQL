@@ -70,3 +70,22 @@ SELECT cust_id,
   cust_country
 FROM custnew;
 ```
+
+## 更新和删除数据
+
+```sql
+-- 更新一列
+UPDATE customers
+SET cust_email = 'elmer@fudd.com'
+WHERE cust_id = 10005;
+
+-- 更新多个列
+UPDATE customers
+SET cust_name = 'The Fudds'
+    cust_email = 'elmer@fudd.com'
+WHERE cust_id = 10005;
+
+-- 删除某条数据
+DELETE FROM customers
+WHERE cust_id = 10006;
+```
